@@ -367,16 +367,26 @@ function drawMask(face, m) {
 
 // ★★★★★★ 第 3 步 开始 / STEP 3 START：faceFrame（把整个函数换成 Qwen 写的版本 / replace the whole function with Qwen's version）★★★★★★
 function faceFrame(face) {
-  // 临时版本：只有位置，没有方向（面具永远正对前方）/ placeholder: position only, no direction (the mask always faces forward)
-  const p = face.points;
-  const top = p[FACE.FOREHEAD];
-  const chin = p[FACE.CHIN];
+  // 量出脸在哪里、有多大，以及在 3D 空间里朝着哪个方向
+  let p = face.points;
+  let top = p[FACE.FOREHEAD];     // 额头顶部
+  let chin = p[FACE.CHIN];        // 下巴
+  let left = p[FACE.LEFT_CHEEK];  // 脸的左边缘
+  let right = p[FACE.RIGHT_CHEEK]; // 脸的右边缘
+  // X：从左边脸颊到右边脸颊的箭头，指向脸的右边（长度变成 1）
+  let X = createVector(right.x - left.x, right.y - left.y, right.z - left.z).normalize();
+  // Y：从额头到下巴的箭头，先去掉了斜向 X 的部分，让它和 X 正好垂直
+  let Y = createVector(chin.x - top.x, chin.y - top.y, chin.z - top.z);
+  Y.sub(p5.Vector.mult(X, Y.dot(X)));
+  Y.normalize();
+  // Z：和 X、Y 都垂直，从脸里朝外，指向摄像头
+  let Z = X.cross(Y);
   return {
     x: (top.x + chin.x) / 2,
     y: (top.y + chin.y) / 2,
-    z: 0,
-    s: faceSize(face),
-    X: createVector(1, 0, 0), Y: createVector(0, 1, 0), Z: createVector(0, 0, 1),
+    z: (top.z + chin.z) / 2,
+    s: dist(left.x, left.y, left.z, right.x, right.y, right.z), // 用 3D 量出来的脸宽
+    X: X, Y: Y, Z: Z,
   };
 }
 // ★★★★★★ 第 3 步 结束 / STEP 3 END ★★★★★★
