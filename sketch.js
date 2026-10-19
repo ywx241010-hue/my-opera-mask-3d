@@ -333,13 +333,34 @@ function loadMedia() {
 
 // ★★★★★★ 第 2 步 开始 / STEP 2 START：drawMask（把整个函数换成 Qwen 写的版本 / replace the whole function with Qwen's version）★★★★★★
 function drawMask(face, m) {
-  // 临时版本：只画一个半透明的椭圆 / placeholder: only a see-through ellipse
-  const f = faceFrame(face);
+  // 把导入的 3D 面具戴到脸上：移到脸的位置，转到脸朝的方向，放大到脸的大小，再贴上它的贴图
+  let f = faceFrame(face);
+  let box = modelBox(m.shape);
+  let k = (f.s * m.size) / box.w;   // 缩放到和脸一样宽
   push();
-  translate(f.x, f.y, 10);
-  fill(255, 60);
-  stroke(255);
-  ellipse(0, 0, f.s, f.s * 1.3);
+  // 1. 移到脸的中间
+  translate(f.x, f.y, f.z);
+  // 2. 转到和脸一样的朝向（矩阵就是脸的三个方向向量 X、Y、Z）
+  applyMatrix(f.X.x, f.X.y, f.X.z, 0, f.Y.x, f.Y.y, f.Y.z, 0, f.Z.x, f.Z.y, f.Z.z, 0, 0, 0, 0, 1);
+  // 3. 这张面具自己的位置修正
+  translate(m.x * f.s, m.y * f.s, m.z * f.s);
+  // 4. 这张面具自己的旋转修正
+  rotateX(radians(m.turnX));
+  rotateY(radians(m.turnY));
+  rotateZ(radians(m.turnZ));
+  // 5. 放大到和脸一样宽；flipY 把“Y 轴朝上”的模型翻正（p5 里 Y 朝下）
+  scale(k, m.flipY ? -k : k, k);
+  // 6. 把模型的中心放到原点，这样它绕着自己的中心转
+  translate(-box.cx, -box.cy, -box.cz);
+  // 7. 贴图：有贴图就贴上去，没有就用灰色
+  noStroke();
+  if (m.image) {
+    texture(m.image);
+  } else {
+    fill(200);
+  }
+  // 8. 画出 3D 模型
+  model(m.shape);
   pop();
 }
 // ★★★★★★ 第 2 步 结束 / STEP 2 END ★★★★★★
