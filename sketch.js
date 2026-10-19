@@ -312,7 +312,22 @@ function draw() {
 
 // ★★★★★★ 第 1 步 开始 / STEP 1 START：loadMedia（把整个函数换成 Qwen 写的版本 / replace the whole function with Qwen's version）★★★★★★
 function loadMedia() {
-  // 临时版本：什么文件都不导入 / placeholder: imports no files
+  // 导入作品需要的所有文件：每一张脸谱的 3D 模型（.obj）和贴图，以及锣、钹、梆子三个声音
+  // 导入需要时间，所以都用带回调函数的写法：文件到了以后才存进变量；不要用 preload()
+  for (const m of MASKS) {
+    // a. 导入 3D 模型；false 表示保持它原来的大小（作品之后会量它）
+    loadModel(m.model, false, (shape) => { m.shape = shape; }, () => mediaError(m.model));
+    // b. 如果有贴图，就导入贴图
+    if (m.texture) {
+      loadImage(m.texture, (img) => { m.image = img; }, () => mediaError(m.texture));
+    }
+  }
+  // 锣：张嘴的时候响
+  loadSound("media/gong.mp3", (s) => { gong = s; }, () => mediaError("media/gong.mp3"));
+  // 钹：变脸的时候响
+  loadSound("media/cymbal.mp3", (s) => { cymbal = s; }, () => mediaError("media/cymbal.mp3"));
+  // 梆子：微笑的时候敲出五声音阶的节奏
+  loadSound("media/woodblock.mp3", (s) => { woodblock = s; }, () => mediaError("media/woodblock.mp3"));
 }
 // ★★★★★★ 第 1 步 结束 / STEP 1 END ★★★★★★
 
