@@ -405,7 +405,20 @@ function stageLights(f) {
 
 // ★★★★★★ 第 5 步 开始 / STEP 5 START：playSounds（把整个函数换成 Qwen 写的版本 / replace the whole function with Qwen's version）★★★★★★
 function playSounds(e, prev, changed) {
-  // 临时版本：没有声音 / placeholder: no sound
+  // 播放导入的声音：变脸 = 钹，张嘴 = 锣，微笑 = 梆子的五声音阶节奏
+  // 声音可能还在导入，所以每次都先检查；只在表情刚出现的那一刻响，而不是每秒 60 次
+  // 1. 刚刚变脸：钹
+  if (changed && cymbal) {
+    cymbal.play();
+  }
+  // 2. 刚刚张开嘴：锣
+  if (e.mouthOpen && !prev.mouthOpen && gong) {
+    gong.play();
+  }
+  // 3. 微笑的时候：用不同的速度敲梆子，音高会变，敲出五声音阶的音
+  if (e.smile && frameCount % 12 === 0 && woodblock) {
+    woodblock.play(0, random([1, 1.125, 1.25, 1.5, 1.667]), 0.8);
+  }
 }
 // ★★★★★★ 第 5 步 结束 / STEP 5 END ★★★★★★
 
