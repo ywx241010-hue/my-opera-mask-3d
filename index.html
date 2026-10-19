@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3D 脸谱 · 变脸 — 3D Opera Masks</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- p5.js + p5.sound：先用项目文件夹里的 lib（不需要网络），没有的话用国内镜像 npmmirror -->
+  <!-- p5.js + p5.sound: first the local lib folder (no internet needed), otherwise the npmmirror China mirror -->
+  <script src="lib/p5.min.js"></script>
+  <script>window.p5 || document.write('<script src="https://registry.npmmirror.com/p5/1.11.10/files/lib/p5.min.js"><\/script>')</script>
+  <script src="lib/p5.sound.min.js"></script>
+  <script>(window.p5 && window.p5.SoundFile) || document.write('<script src="https://registry.npmmirror.com/p5/1.11.10/files/lib/addons/p5.sound.min.js"><\/script>')</script>
+  <script src="sketch.js"></script>
+</head>
+<body>
+  <div id="intro">
+    <div class="card">
+      <h1>3D 脸谱</h1>
+      <p class="sub">京剧脸谱 · 川剧变脸 · 3D Peking-opera masks · Sichuan face-changing</p>
+      <ul>
+        <li>一张 3D 脸谱戴在你的脸上，跟着你转头 · A 3D opera mask sits on your face and turns with your head</li>
+        <li>扬起眉毛 → 变脸！· Raise your eyebrows → the mask changes in a flash!</li>
+        <li>张开嘴 → 锣 · Open your mouth → gong</li>
+        <li>微笑 → 梆子的节奏 · Smile → a woodblock rhythm</li>
+        <li><kbd>空格 Space</kbd> 变脸 change · <kbd>G</kbd> 锣 gong · <kbd>S</kbd> 保存 save · <kbd>V</kbd> 摄像头 camera · <kbd>K</kbd> 面部点 face points · <kbd>C</kbd> 校准 calibrate</li>
+      </ul>
+      <p class="tip">脸正对摄像头，离开 40 到 80 厘米，光线充足 · Face the camera, 40–80 cm away, in good light</p>
+      <button id="start">开场 · Curtain up</button>
+    </div>
+  </div>
+  <div id="mask-name"></div>
+  <div id="status"></div>
+</body>
+</html>

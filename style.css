@@ -1,0 +1,112 @@
+/* 全屏画布，没有滚动条 / full-screen canvas, no scrollbars */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #46080e;
+  color: #fbe9c8;
+  font-family: "Songti SC", "STSong", "SimSun", "PingFang SC", "Microsoft YaHei", Georgia, serif;
+}
+
+canvas {
+  display: block;
+}
+
+/* 开始界面 / start screen */
+#intro {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #46080e;
+  z-index: 10;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.card {
+  max-width: 640px;
+  padding: 28px 32px;
+  background: rgba(90, 12, 20, 0.92);
+  border: 2px solid #e8b923;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.card h1 {
+  font-size: clamp(2.6rem, 9vw, 4.6rem);
+  margin: 0;
+  letter-spacing: 0.2em;
+  font-weight: normal;
+}
+
+.sub {
+  margin: 6px 0 18px;
+  opacity: 0.8;
+}
+
+.card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 14px;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.tip {
+  font-size: 0.9em;
+  opacity: 0.75;
+  margin: 0 0 20px;
+}
+
+kbd {
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  padding: 0 6px;
+  font-size: 0.85em;
+}
+
+#start {
+  font-family: inherit;
+  font-size: 1.15rem;
+  padding: 12px 34px;
+  border: none;
+  border-radius: 6px;
+  background: #c62828;
+  color: #fbe9c8;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+}
+
+#start:hover {
+  filter: brightness(1.15);
+}
+
+/* 状态提示 / status line */
+#status {
+  position: fixed;
+  left: 16px;
+  bottom: 12px;
+  font-size: 0.85rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  pointer-events: none;
+  max-width: calc(100vw - 48px);
+}
+
+/* 脸谱的名字（3D 画布上不能直接写中文，所以用网页文字）/ the mask's name (shown as page text above the 3D canvas) */
+#mask-name {
+  position: fixed;
+  top: 12px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 22px;
+  color: #ffecc8;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+  z-index: 5;
+}
